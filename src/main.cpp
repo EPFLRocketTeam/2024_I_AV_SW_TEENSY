@@ -1,48 +1,43 @@
 /*
- * Copyright (c) 2016 Intel Corporation
+ * Copyright (c) 2012-2014 Wind River Systems, Inc.
  *
  * SPDX-License-Identifier: Apache-2.0
  */
 
 #include <stdio.h>
-#include <zephyr/kernel.h>
-#include <zephyr/drivers/gpio.h>
+#include <zephyr/drivers/spi.h>
 
-/* 1000 msec = 1 sec */
-#define SLEEP_TIME_MS   1000
+#define SPI_MESSAGE 0xA5
 
-/* The devicetree node identifier for the "led0" alias. */
-#define LED0_NODE DT_ALIAS(led0)
+#define LOG_LEVEL CONFIG_LOG_DEFAULT_LEVEL
+#include <zephyr/logging/log.h>
+LOG_MODULE_REGISTER(app);
 
-/*
- * A build error on this line means your board is unsupported.
- * See the sample documentation for information on how to fix this.
- */
-static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
+const struct spi_config spi_cfg = {
+        .frequency = 1000000,
+        .operation = SPI_OP_MODE_MASTER | SPI_TRANSFER_MSB | SPI_WORD_SET(8) | SPI_MODE_CPHA,
+        .cs = 0,
+};
+
+uint8_t buf[1000] = {0};
 
 int main(void)
 {
-    int ret;
-    bool led_state = true;
+    memset(buf, SPI_MESSAGE, 1000);
+    struct spi_buf tx_buf = {.buf = buf, .len = 1000};
+    struct spi_buf_set tx_bufs = {.buffers = &tx_buf, .count = 1};
+    const struct device *spi;
 
-    if (!gpio_is_ready_dt(&led)) {
+    // this part is modified from the original code
+    spi = device_get_binding(DEVICE_DT_NAME(DT_N_NODELABEL_flexspi));
+    if (!device_is_ready(spi)) {
         return 0;
     }
 
-    ret = gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
-    if (ret < 0) {
-        return 0;
+    while (1) {
+        spi_write(spi, &spi_cfg, &tx_bufs);
+        k_sleep(K_MSEC(100));
     }
 
-    while (true) {
-        ret = gpio_pin_toggle_dt(&led);
-        if (ret < 0) {
-            return 0;
-        }
-
-        led_state = !led_state;
-        printf("LED state: %s\n", led_state ? "ON" : "OFF");
-        k_msleep(SLEEP_TIME_MS);
-    }
     return 0;
 }
