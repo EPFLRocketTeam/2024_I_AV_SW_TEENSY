@@ -29,11 +29,9 @@
 
 // taking the 3 because it is the one redefined in teensy40.dts
 &lpspi3{
-    status = "enable";
+    status = "enabled";
 };
 
 &lpspi4{
-    status = "disable";
+    status = "disabled";
 };
-
-//
