@@ -28,7 +28,7 @@
 };
 
 // taking the 3 because it is the one redefined in teensy40.dts
-&lpspi3 {
+our_spi: &lpspi3 {
     status = "okay";
 	pinctrl-0 = <&pinmux_lpspi3>;
 	pinctrl-names = "default";

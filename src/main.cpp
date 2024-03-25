@@ -29,7 +29,7 @@ int main(void)
     const struct device *spi;
 
     // this part is modified from the original code
-    spi = device_get_binding(DEVICE_DT_NAME(DT_N_NODELABEL_lpspi3));
+    spi = device_get_binding(DEVICE_DT_NAME(DT_NODELABEL(our_spi)));
     if (!device_is_ready(spi)) {
         return 0;
     }
