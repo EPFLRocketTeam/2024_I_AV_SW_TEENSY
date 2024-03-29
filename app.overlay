@@ -28,20 +28,10 @@
 //};
 
 // taking the 3 because it is the one redefined in teensy40.dts
-our_spi1: &lpspi3 {
+&lpspi3 {
     status = "okay";
-	pinctrl-0 = <&pinmux_lpspi3>;
-	pinctrl-names = "default";
-    spidev1: spi-devices@1 {
-        reg = <0x1>;
-    };
 };
 
 our_spi2: &lpspi4 {
     status = "disabled";
-	pinctrl-0 = <&pinmux_lpspi4>;
-	pinctrl-names = "default";
-    spidev2: spi-devices@1 {
-        reg = <0x1>;
-    };
 };
