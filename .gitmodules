@@ -1,3 +1,6 @@
 [submodule "2024_I_AV_SW_ARCH"]
 	path = 2024_I_AV_SW_ARCH/
 	url = https://github.com/EPFLRocketTeam/2024_I_AV_SW_ARCH
+[submodule "ARCH"]
+	path = ARCH
+	url = https://github.com/EPFLRocketTeam/2024_I_AV_SW_ARCH
