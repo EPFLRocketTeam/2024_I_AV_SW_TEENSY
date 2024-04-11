@@ -1,0 +1,7 @@
+&lpspi3 {
+    status = "okay";
+};
+
+&lpspi4 {
+    status = "ok";
+};

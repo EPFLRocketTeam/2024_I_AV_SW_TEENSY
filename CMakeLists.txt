@@ -1,10 +1,15 @@
 # SPDX-License-Identifier: Apache-2.0
 
 cmake_minimum_required(VERSION 3.20.0)
+set(BOARD teensy41)
 find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 project(app)
 
-target_sources(app PRIVATE src/main.c)
+target_sources(app PRIVATE src/main.cpp)
+
+add_subdirectory(2024_I_AV_SW_ARCH/)
+target_link_libraries(app PRIVATE 2024_I_AV_SW_TEENSY)
+
 
 # The external static library that we are linking with does not know
 # how to build for this platform so we export all the flags used in
@@ -14,6 +19,7 @@ target_sources(app PRIVATE src/main.c)
 # do not need any build information from zephyr. Or they may be
 # incompatible with certain zephyr options and need them to be
 # filtered out.
+
 zephyr_get_include_directories_for_lang_as_string(       C includes)
 zephyr_get_system_include_directories_for_lang_as_string(C system_includes)
 zephyr_get_compile_definitions_for_lang_as_string(       C definitions)
