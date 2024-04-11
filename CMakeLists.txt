@@ -7,7 +7,7 @@ project(app)
 
 target_sources(app PRIVATE src/main.cpp)
 
-add_subdirectory(2024_I_AV_SW_ARCH/)
+add_subdirectory(ARCH)
 target_link_libraries(app PRIVATE 2024_I_AV_SW_TEENSY)
 
 
