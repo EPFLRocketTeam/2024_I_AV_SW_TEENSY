@@ -17,7 +17,7 @@
     // can redefine pin control
     group0 {
         pinmux = <&iomuxc_gpio_b0_00_lpspi4_pcs0>,
-				<&iomuxc_gpio_b0_03_lpspi4_sck>,
+                 <&iomuxc_gpio_b0_03_lpspi4_sck>,
 				<&iomuxc_gpio_b0_01_lpspi4_sdi>,
 				<&iomuxc_gpio_b0_02_lpspi4_sdo>;
         //redefine pinmux which is right now the same as in dts
