@@ -1,7 +1,7 @@
 &lpspi3 {
-    status = "okay";
+    status = "disabled";
 };
 
 &lpspi4 {
-    status = "ok";
+    status = "okay";
 };
