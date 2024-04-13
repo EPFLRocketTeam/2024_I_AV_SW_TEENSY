@@ -5,7 +5,7 @@ set(BOARD teensy41)
 find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 project(app)
 
-target_sources(app PRIVATE src/main.cpp)
+target_sources(app PRIVATE src/main.cpp src/base_teensy_intranet.cpp)
 
 add_subdirectory(ARCH)
 target_link_libraries(app PRIVATE 2024_I_AV_SW_TEENSY)
