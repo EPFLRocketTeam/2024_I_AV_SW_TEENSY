@@ -7,21 +7,31 @@
 #define FREQUENCY 1000000
 #define CHIP_SELECT_OPT 0
 #define TEST_BUFFER_LENGTH 1000
-// define the max num of slaves to see
-#define SLAVE_LIMIT 1
+// define the number
+#define SLAVE_NUMBER 0
 #define NUM_READ_BUFFERS
 
-BaseTeensyIntranet::BaseTeensyIntranet() : spi_cfg{FREQUENCY, SPI_OP_MODE_MASTER | SPI_TRANSFER_MSB
-                                                              | SPI_WORD_SET(8) | SPI_MODE_CPHA, SLAVE_LIMIT,
-                                                   CHIP_SELECT_OPT},
-                                           spi(device_get_binding(DEVICE_DT_NAME(DT_NODELABEL(lpspi4)))),
-                                           rx_bufs{read_buffers,  NUM_READ_BUFFERS},
-                                           sig{}
-                                           {}
-
+BaseTeensyIntranet::BaseTeensyIntranet() : rxBufferSync{byteBufferRx, BUFFER_LENGTH},
+                                           txBufferSync{byteBufferTx, BUFFER_LENGTH},
+                                           dev(device_get_binding(DEVICE_DT_NAME(DT_NODELABEL(lpspi3)))),
+                                           spiCfg{FREQUENCY, SPI_OP_MODE_MASTER | SPI_TRANSFER_MSB | SPI_WORD_SET(8) |
+                                                             SPI_MODE_CPHA, SLAVE_NUMBER,
+                                                  CHIP_SELECT_OPT},// the one represents the size of
+                                           txBuffersSync{&txBufferSync, 1}, // j'ai vu ça dans un autre code ça devrait marcher
+                                           rxBuffersSync{&rxBufferSync, 1} {
+    // if this does not work try
+    // Inside class initialise txIntermediaryBufferSync un array the txBufferSync de length 1(dépendant du nombre de buffer que l'on veut)
+    // const struct spi_buf txIntermediaryBufferSync[1] = {byteBufferTx}
+    // et puis feed ça à txBuffersSync
+}
 
 bool BaseTeensyIntranet::readByte(uint8_t &byte) {
-    // doc
-    spi_read_signal(spi, spi_cfg,)
-    return true;
+    // j'imagine que c'est l'implémentation souhaité
+    byteBufferTx[0] = byte;
+    return spi_transceive(dev, &spiCfg, &txBuffersSync, &rxBuffersSync);
+}
+
+bool BaseTeensyIntranet::writeByte(const uint8_t &byte) {
+    byteBufferTx[0] = byte;
+    return spi_write(dev, &spiCfg, &txBuffersSync);
 }
