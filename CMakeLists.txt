@@ -3,12 +3,23 @@ set(BOARD teensy41)
 find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 project(app)
 
-target_sources(app PRIVATE src/main.cpp src/base_teensy_intranet.cpp)
+target_include_directories(app PUBLIC include/)
+target_sources(app PRIVATE
+  src/main.cpp
+  
+  include/teensy_board.hpp include/config.hpp
+  src/teensy_board.cpp
+  
+  include/system/fsm.hpp include/system/system_types.hpp include/system/system.hpp
+  src/system/system.cpp
 
-add_subdirectory(ARCH)
-include_directories(ARCH/include)
-target_link_libraries(app PRIVATE 2024_I_AV_SW_TEENSY)
+  include/telemetry/telemetry_types.hpp include/telemetry/teensy_telemetry.hpp
+  src/telemetry/teensy_telemetry.cpp
 
+  include/sensors/teensy_sensors.hpp
+  src/sensors/teensy_sensors.cpp
+
+  )
 
 # The external static library that we are linking with does not know
 # how to build for this platform so we export all the flags used in

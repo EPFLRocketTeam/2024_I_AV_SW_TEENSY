@@ -6,7 +6,6 @@
 
 #include <stdio.h>
 #include <zephyr/drivers/spi.h>
-#include "base_teensy_intranet.hpp"
 
 #define SPI_MESSAGE 0xA5
 

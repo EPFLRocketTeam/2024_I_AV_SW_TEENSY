@@ -6,28 +6,30 @@
 #define APP_BASETEENSYINTRANET_H
 
 #include <zephyr/drivers/spi.h>
-#include <common/channel/base_intranet_channel.hpp>
+#include "intranet/intranet_packets.hpp"
+
 // just to avoid magic constants
 #define BUFFER_LENGTH 1
 
-class BaseTeensyIntranet : public virtual BaseIntranetChannel {
+class TeensyIntranet {
 public:
-    BaseTeensyIntranet();
+    explicit TeensyIntranet();
 
-    virtual void init() = 0;
+    void init();
 
-    bool readByte(uint8_t &byte) override;
-    bool writeByte(const uint8_t &byte) override;
+    void encode(const IntranetPacket& packet);
+    
+    bool readByte(uint8_t &byte);
+    bool writeByte(const uint8_t &byte);
 
-protected:
+private:
     uint8_t byteBufferRx[BUFFER_LENGTH] = {0};
     uint8_t byteBufferTx[BUFFER_LENGTH] = {0};
     //Synchronous read buffer
     const struct spi_buf  rxBufferSync;
     //Synchronous write buffer
     const struct spi_buf txBufferSync;
-private:
-    const struct device * dev;
+    const struct device *dev;
     const struct spi_config spiCfg;
     // synchronous transmition set points to an array of buffers
     const struct spi_buf_set txBuffersSync;
