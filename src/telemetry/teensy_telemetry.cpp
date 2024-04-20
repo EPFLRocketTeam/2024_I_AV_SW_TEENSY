@@ -6,8 +6,7 @@ TelemetryStatus TeensyTelemetry::get() {
 
 void TeensyTelemetry::setCommand(CommandID id, COMMAND_VALUE value) {
 	commandId = id;
-	commandValue = value;
-
+	commandValue = value;	
 }
 
 void TeensyTelemetry::resetCommand() {
