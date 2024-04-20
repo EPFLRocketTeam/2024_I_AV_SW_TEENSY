@@ -1,33 +1,3 @@
-//normally MISO, MOSI, SCK, CS on Teensy-Pins 39/26/27/38 the order in pinmux is CS SCK SDI et SDO
-//&pinmux_lpspi3 {
-    // can redefine pin control
-//    group0 {
-//        pinmux = <&iomuxc_gpio_ad_b0_00_gpio1_io00>,
-//                 <&iomuxc_gpio_ad_b0_00_lpspi3_sck>,
-//                 <&iomuxc_gpio_ad_b0_02_lpspi3_sdi>,
-//                 <&iomuxc_gpio_ad_b0_01_lpspi3_sdo>;
-//        drive-strength = "r0-6";
-//        slew-rate = "slow";
-//        nxp,speed = "100-mhz";
-//    };
-//};
-
-// MISO, MOSI, SCK, CS on Teensy-Pins 12/11/13/10
-&pinmux_lpspi4 {
-    // can redefine pin control
-    group0 {
-        pinmux = <&iomuxc_gpio_b0_00_lpspi4_pcs0>,
-                 <&iomuxc_gpio_b0_03_lpspi4_sck>,
-				<&iomuxc_gpio_b0_01_lpspi4_sdi>,
-				<&iomuxc_gpio_b0_02_lpspi4_sdo>;
-        //redefine pinmux which is right now the same as in dts
-        drive-strength = "r0-6";
-        slew-rate = "slow";
-        nxp,speed = "100-mhz";
-    };
-};
-
-// taking the 3 because it is the one redefined in teensy40.dts
 &lpspi3 {
     status = "disabled";
 };
