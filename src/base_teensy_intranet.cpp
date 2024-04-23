@@ -13,7 +13,7 @@
 
 BaseTeensyIntranet::BaseTeensyIntranet() : rxBufferSync{byteBufferRx, BUFFER_LENGTH},
                                            txBufferSync{byteBufferTx, BUFFER_LENGTH},
-                                           dev(device_get_binding(DEVICE_DT_NAME(DT_NODELABEL(lpspi3)))),
+                                           dev(device_get_binding(DEVICE_DT_NAME(DT_NODELABEL(lpspi4)))),
                                            spiCfg{FREQUENCY, SPI_OP_MODE_MASTER | SPI_TRANSFER_MSB | SPI_WORD_SET(8) |
                                                              SPI_MODE_CPHA, SLAVE_NUMBER,
                                                   CHIP_SELECT_OPT},// the one represents the size of
@@ -25,13 +25,22 @@ BaseTeensyIntranet::BaseTeensyIntranet() : rxBufferSync{byteBufferRx, BUFFER_LEN
     // et puis feed ça à txBuffersSync
 }
 
-bool BaseTeensyIntranet::readByte(uint8_t &byte) {
-    // j'imagine que c'est l'implémentation souhaité
-    byteBufferTx[0] = byte;
-    return spi_transceive(dev, &spiCfg, &txBuffersSync, &rxBuffersSync);
+uint8_t BaseTeensyIntranet::readByte(uint8_t &byte) {
+    readError =  spi_read(dev, &spiCfg, &rxBuffersSync);
+    return byteBufferRx[0];
 }
 
-bool BaseTeensyIntranet::writeByte(const uint8_t &byte) {
+uint8_t BaseTeensyIntranet::writeByte(const uint8_t &byte) {
     byteBufferTx[0] = byte;
-    return spi_write(dev, &spiCfg, &txBuffersSync);
+    writeError = spi_transceive(dev, &spiCfg, &txBuffersSync, &rxBuffersSync);
+    return byteBufferRx[0];
 }
+
+bool BaseTeensyIntranet::getWriteSuccessful(){
+    return !writeError;
+}
+
+bool BaseTeensyIntranet::getReadSuccessful(){
+    return !readError;
+}
+
