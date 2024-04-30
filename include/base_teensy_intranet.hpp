@@ -6,6 +6,7 @@
 #define APP_BASETEENSYINTRANET_H
 
 #include <zephyr/drivers/spi.h>
+
 // just to avoid magic constants
 #define BUFFER_LENGTH 1
 
@@ -26,14 +27,18 @@ private:
     const struct spi_buf  rxBufferSync;
     //Synchronous write buffer
     const struct spi_buf txBufferSync;
-    uint8_t readError{};
-    uint8_t writeError{};
+    uint8_t readError;
+    uint8_t writeError;
     const struct device * dev;
     const struct spi_config spiCfg;
     // synchronous transmition set points to an array of buffers
     const struct spi_buf_set txBuffersSync;
     // synchronous recieve set
     const struct spi_buf_set rxBuffersSync;
+    // Creation of the buffer
+    void appendToBuffer(uint8_t * buffer, size_t size);
+    void appendToBuffer(uint8_t buffer);
+
 };
 
 
