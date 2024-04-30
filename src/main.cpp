@@ -4,7 +4,7 @@
 
 int main(){
     auto spi_device = BaseTeensyIntranet();
-    uint8_t test_int= 8;
+    uint8_t test_int= 0b11110110;
 
     while(1){
         spi_device.writeByte(test_int);

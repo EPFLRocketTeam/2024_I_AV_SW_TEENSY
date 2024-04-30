@@ -11,18 +11,18 @@
 #define SLAVE_NUMBER 0
 #define NUM_READ_BUFFERS
 
-BaseTeensyIntranet::BaseTeensyIntranet() : rxBufferSync{byteBufferRx, BUFFER_LENGTH},
+// possibilité de définir le channel sur lequel on veut le spi BaseTeensyIntranet(device_get_binding(DEVICE_DT_NAME(DT_NODELABEL(lpspi4))))
+// spi 4; 10 11 12 13 CS MOSI MISO SCK
+// spi 3; 39 26 27 38 MISO MOSI SCK CS
+BaseTeensyIntranet::BaseTeensyIntranet(const device * device) : rxBufferSync{byteBufferRx, BUFFER_LENGTH},
                                            txBufferSync{byteBufferTx, BUFFER_LENGTH},
-                                           dev(device_get_binding(DEVICE_DT_NAME(DT_NODELABEL(lpspi4)))),
+                                           dev(device),
                                            spiCfg{FREQUENCY, SPI_OP_MODE_MASTER | SPI_TRANSFER_MSB | SPI_WORD_SET(8) |
                                                              SPI_MODE_CPHA, SLAVE_NUMBER,
                                                   CHIP_SELECT_OPT},// the one represents the size of
                                            txBuffersSync{&txBufferSync, 1}, // j'ai vu ça dans un autre code ça devrait marcher
                                            rxBuffersSync{&rxBufferSync, 1} {
-    // if this does not work try
-    // Inside class initialise txIntermediaryBufferSync un array the txBufferSync de length 1(dépendant du nombre de buffer que l'on veut)
-    // const struct spi_buf txIntermediaryBufferSync[1] = {byteBufferTx}
-    // et puis feed ça à txBuffersSync
+
 }
 
 uint8_t BaseTeensyIntranet::readByte(uint8_t &byte) {
@@ -36,11 +36,11 @@ uint8_t BaseTeensyIntranet::writeByte(const uint8_t &byte) {
     return byteBufferRx[0];
 }
 
-bool BaseTeensyIntranet::getWriteSuccessful(){
+bool BaseTeensyIntranet::getWriteSuccessful() const{
     return !writeError;
 }
 
-bool BaseTeensyIntranet::getReadSuccessful(){
+bool BaseTeensyIntranet::getReadSuccessful() const{
     return !readError;
 }
 
