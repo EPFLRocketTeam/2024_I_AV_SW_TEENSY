@@ -58,7 +58,7 @@ bool BaseTeensyIntranet::flush(){
     while(!classBuffer.empty()){
         writeByte(classBuffer.front());
         if(writeError)
-            return writeError;
+            return false;
         classBuffer.erase(classBuffer.begin());
     }
     return true;
