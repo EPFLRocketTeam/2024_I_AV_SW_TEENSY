@@ -4,9 +4,11 @@
 
 int main(){
     auto spi_device = BaseTeensyIntranet();
-    uint8_t test_int= 0b11110110;
+    uint8_t array[3] = {1, 2, 3};
+    uint8_t byte = 7;
 
     while(1){
-        spi_device.writeByte(test_int);
+        spi_device.appendToSend(array, 3);
+        spi_device.flush();
     }
 }
