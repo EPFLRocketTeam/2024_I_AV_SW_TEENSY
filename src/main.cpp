@@ -3,7 +3,7 @@
 
 
 int main(){
-    auto spi_device = BaseTeensyIntranet();
+    auto spi_device = BaseTeensyIntranetSPI();
     uint8_t array[3] = {1, 2, 3};
     uint8_t byte = 7;
 
