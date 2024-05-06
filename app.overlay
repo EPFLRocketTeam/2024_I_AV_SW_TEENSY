@@ -1,7 +1,24 @@
+// spi 3; 39 26 27 38 MISO MOSI SCK CS
 &lpspi3 {
+    status = "okay";
+};
+
+// spi 4; 10 11 12 13 CS MOSI MISO SCK
+&lpspi4 {
+    status = "okay";
+};
+
+/*SCL/SDA 19/18*/
+&lpi2c1 {
+    status = "okay";
+};
+
+/* SCL/SDA 16/17 */
+&lpi2c3 {
     status = "disabled";
 };
 
-&lpspi4 {
-    status = "okay";
+/* SCL/SDA 24/25*/
+&lpi2c4 {
+    status = "disabled";
 };
